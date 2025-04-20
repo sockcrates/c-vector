@@ -17,11 +17,19 @@ void EmptyVector() {
 void PushingToBack() {
   printf("Running PushBackVector()…\n");
   Vector* vec = CreateVector();
-  int expected = 42;
-  PushBackVector(vec, &expected);
+  int a = 42;
+  PushBackVector(vec, &a);
+  int b = 42;
+  PushBackVector(vec, &b);
+  int c = 42;
+  PushBackVector(vec, &c);
 
-  int* result = PeekVector(vec, 0);
-  assert(*result == expected);
+  int* resultA = PeekVector(vec, 0);
+  assert(*resultA == a);
+  int* resultB = PeekVector(vec, 1);
+  assert(*resultB == b);
+  int* resultC = PeekVector(vec, 2);
+  assert(*resultC == c);
 
   DestroyVector(vec);
 }
