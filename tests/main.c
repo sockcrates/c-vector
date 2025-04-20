@@ -1,10 +1,10 @@
-#include "vector_test.h"
-
 #include <stdio.h>
 
+#include "vector_test.h"
+
 int main(void) {
-    printf("Running test suite…\n");
-    CreatingEmptyVector();
-    printf("✅ All tests passed!\n");
-    return 0;
+  printf("Running test suite…\n");
+  CreatingEmptyVector();
+  printf("✅ All tests passed!\n");
+  return 0;
 }
