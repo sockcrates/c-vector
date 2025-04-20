@@ -1,5 +1,6 @@
 #include "vector.h"
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 struct Vector {
@@ -33,15 +34,35 @@ void* PeekVector(Vector* vector, size_t index) {
   return vector->data[index];
 }
 
+bool ExpandVector(Vector* vector) {
+  size_t new_capacity = vector->capacity ? vector->capacity * 2 : 1;
+  void** new_data = realloc(vector->data, new_capacity * sizeof(*new_data));
+  if (!new_data) {
+    return false;
+  }
+  vector->data = new_data;
+  vector->capacity = new_capacity;
+  return true;
+}
+
 void PushBackVector(Vector* vector, void* data) {
   if (vector->size == vector->capacity) {
-    size_t new_capacity = vector->capacity ? vector->capacity * 2 : 1;
-    void** new_data = realloc(vector->data, new_capacity * sizeof(*new_data));
-    if (!new_data) {
+    if (!ExpandVector(vector)) {
       return;
     }
-    vector->data = new_data;
-    vector->capacity = new_capacity;
   }
   vector->data[vector->size++] = data;
+}
+
+void PushFrontVector(Vector* vector, void* data) {
+  if (vector->size == vector->capacity) {
+    if (!ExpandVector(vector)) {
+      return;
+    }
+  }
+  for (size_t i = vector->size; i > 0; --i) {
+    vector->data[i] = vector->data[i - 1];
+  }
+  vector->data[0] = data;
+  vector->size++;
 }

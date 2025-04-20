@@ -13,4 +13,6 @@ void* PeekVector(Vector* vector, size_t index);
 
 void PushBackVector(Vector* vector, void* data);
 
+void PushFrontVector(Vector* vector, void* data);
+
 #endif

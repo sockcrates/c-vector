@@ -6,4 +6,6 @@ void EmptyVector();
 
 void PushingToBack();
 
+void PushingToFront();
+
 #endif

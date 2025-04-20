@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 void EmptyVector() {
-  printf("Running CreatingEmptyVector()…\n");
+  printf("Running EmptyVector()…\n");
   Vector* vec = CreateVector();
 
   assert(vec != NULL);
@@ -15,13 +15,13 @@ void EmptyVector() {
 }
 
 void PushingToBack() {
-  printf("Running PushBackVector()…\n");
+  printf("Running PushingToBack()…\n");
   Vector* vec = CreateVector();
   int a = 42;
   PushBackVector(vec, &a);
-  int b = 42;
+  int b = 21;
   PushBackVector(vec, &b);
-  int c = 42;
+  int c = 11;
   PushBackVector(vec, &c);
 
   int* resultA = PeekVector(vec, 0);
@@ -29,6 +29,28 @@ void PushingToBack() {
   int* resultB = PeekVector(vec, 1);
   assert(*resultB == b);
   int* resultC = PeekVector(vec, 2);
+  assert(*resultC == c);
+
+  DestroyVector(vec);
+}
+
+void PushingToFront() {
+  printf("Running PushingToFront()…\n");
+  Vector* vec = CreateVector();
+  int a = 100;
+  PushFrontVector(vec, &a);
+
+  int* resultA = PeekVector(vec, 0);
+  assert(*resultA == a);
+
+  int b = 25;
+  PushFrontVector(vec, &b);
+  int* resultB = PeekVector(vec, 0);
+  assert(*resultB == b);
+
+  int c = 16;
+  PushFrontVector(vec, &c);
+  int* resultC = PeekVector(vec, 0);
   assert(*resultC == c);
 
   DestroyVector(vec);
