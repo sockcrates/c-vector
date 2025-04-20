@@ -13,3 +13,15 @@ void EmptyVector() {
   assert(data == NULL);
   DestroyVector(vec);
 }
+
+void PushingToBack() {
+  printf("Running PushBackVector()…\n");
+  Vector* vec = CreateVector();
+  int expected = 42;
+  PushBackVector(vec, &expected);
+
+  int* result = PeekVector(vec, 0);
+  assert(*result == expected);
+
+  DestroyVector(vec);
+}

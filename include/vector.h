@@ -11,4 +11,6 @@ void DestroyVector(Vector* vector);
 
 void* PeekVector(Vector* vector, size_t index);
 
+void PushBackVector(Vector* vector, void* data);
+
 #endif
