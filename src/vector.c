@@ -26,7 +26,7 @@ void DestroyVector(Vector* vector) {
   }
 }
 
-void* PeekVector(Vector *vector, size_t index) {
+void* PeekVector(Vector* vector, size_t index) {
   if (index < 0 || index >= vector->size) {
     return NULL;
   }
