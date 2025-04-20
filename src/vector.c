@@ -19,6 +19,13 @@ Vector* CreateVector() {
   return vec;
 }
 
+void DestroyVector(Vector* vector) {
+  if (vector != NULL) {
+    free(vector->data);
+    free(vector);
+  }
+}
+
 void* PeekVector(Vector *vector, size_t index) {
   if (index < 0 || index >= vector->size) {
     return NULL;

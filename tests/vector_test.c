@@ -10,4 +10,5 @@ void CreatingEmptyVector() {
   assert(vec != NULL);
   void* data = PeekVector(vec, 0);
   assert(data == NULL);
+  DestroyVector(vec);
 }
