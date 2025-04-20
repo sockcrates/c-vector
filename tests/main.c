@@ -4,7 +4,7 @@
 
 int main(void) {
   printf("Running test suite…\n");
-  CreatingEmptyVector();
+  EmptyVector();
   printf("✅ All tests passed!\n");
   return 0;
 }
