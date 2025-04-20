@@ -7,6 +7,8 @@ typedef struct Vector Vector;
 
 Vector* CreateVector();
 
+void DestroyVector(Vector* vector);
+
 void* PeekVector(Vector* vector, size_t index);
 
 #endif
