@@ -7,6 +7,6 @@ typedef struct Vector Vector;
 
 Vector* CreateVector();
 
-void* PeekVector(Vector* vector, int index);
+void* PeekVector(Vector* vector, size_t index);
 
 #endif
