@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 struct Vector {
-  void* data;
+  void** data;
   size_t size;
   size_t capacity;
 };
@@ -30,5 +30,18 @@ void* PeekVector(Vector* vector, size_t index) {
   if (index < 0 || index >= vector->size) {
     return NULL;
   }
-  return &vector->data[index];
+  return vector->data[index];
+}
+
+void PushBackVector(Vector* vector, void* data) {
+  if (vector->size == vector->capacity) {
+    size_t new_capacity = vector->capacity ? vector->capacity * 2 : 1;
+    void** new_data = realloc(vector->data, new_capacity * sizeof(*new_data));
+    if (!new_data) {
+      return;
+    }
+    vector->data = new_data;
+    vector->capacity = new_capacity;
+  }
+  vector->data[vector->size++] = data;
 }
