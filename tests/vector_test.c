@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-void CreatingEmptyVector() {
+void EmptyVector() {
   printf("Running CreatingEmptyVector()…\n");
   Vector* vec = CreateVector();
 

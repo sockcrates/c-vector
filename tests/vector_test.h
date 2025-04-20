@@ -2,6 +2,6 @@
 #define VECTOR_TEST_H
 #include "vector.h"
 
-void CreatingEmptyVector();
+void EmptyVector();
 
 #endif
