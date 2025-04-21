@@ -54,15 +54,19 @@ void PushBackVector(Vector* vector, void* data) {
   vector->data[vector->size++] = data;
 }
 
-void PushFrontVector(Vector* vector, void* data) {
+void InsertVector(Vector* vector, size_t pos, void* data) {
   if (vector->size == vector->capacity) {
     if (!ExpandVector(vector)) {
       return;
     }
   }
-  for (size_t i = vector->size; i > 0; --i) {
+  for (size_t i = vector->size; i > pos; --i) {
     vector->data[i] = vector->data[i - 1];
   }
-  vector->data[0] = data;
+  vector->data[pos] = data;
   vector->size++;
+}
+
+void PushFrontVector(Vector* vector, void* data) {
+  InsertVector(vector, 0, data);
 }
