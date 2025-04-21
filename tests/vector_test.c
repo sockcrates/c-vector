@@ -80,6 +80,8 @@ void InsertingVector() {
   assert(*resultC == c);
   int* resultD = PeekVector(vec, 4);
   assert(*resultD == d);
+  void* outOfBounds = PeekVector(vec, 5);
+  assert(outOfBounds == NULL);
 
   DestroyVector(vec);
 }
