@@ -24,12 +24,12 @@ void PushingToBack() {
   int c = 11;
   PushBackVector(vec, &c);
 
-  int* resultA = PeekVector(vec, 0);
-  assert(*resultA == a);
-  int* resultB = PeekVector(vec, 1);
-  assert(*resultB == b);
-  int* resultC = PeekVector(vec, 2);
-  assert(*resultC == c);
+  int* result_a = PeekVector(vec, 0);
+  assert(*result_a == a);
+  int* result_b = PeekVector(vec, 1);
+  assert(*result_b == b);
+  int* result_c = PeekVector(vec, 2);
+  assert(*result_c == c);
 
   DestroyVector(vec);
 }
@@ -40,18 +40,18 @@ void PushingToFront() {
   int a = 100;
   PushFrontVector(vec, &a);
 
-  int* resultA = PeekVector(vec, 0);
-  assert(*resultA == a);
+  int* result_a = PeekVector(vec, 0);
+  assert(*result_a == a);
 
   int b = 25;
   PushFrontVector(vec, &b);
-  int* resultB = PeekVector(vec, 0);
-  assert(*resultB == b);
+  int* result_b = PeekVector(vec, 0);
+  assert(*result_b == b);
 
   int c = 16;
   PushFrontVector(vec, &c);
-  int* resultC = PeekVector(vec, 0);
-  assert(*resultC == c);
+  int* result_c = PeekVector(vec, 0);
+  assert(*result_c == c);
 
   DestroyVector(vec);
 }
@@ -70,16 +70,16 @@ void InsertingVector() {
   int e = 5;
   InsertVector(vec, 2, &e);
 
-  int* resultA = PeekVector(vec, 0);
-  assert(*resultA == a);
-  int* resultB = PeekVector(vec, 1);
-  assert(*resultB == b);
-  int* resultE = PeekVector(vec, 2);
-  assert(*resultE == e);
-  int* resultC = PeekVector(vec, 3);
-  assert(*resultC == c);
-  int* resultD = PeekVector(vec, 4);
-  assert(*resultD == d);
+  int* result_a = PeekVector(vec, 0);
+  assert(*result_a == a);
+  int* result_b = PeekVector(vec, 1);
+  assert(*result_b == b);
+  int* result_e = PeekVector(vec, 2);
+  assert(*result_e == e);
+  int* result_c = PeekVector(vec, 3);
+  assert(*result_c == c);
+  int* result_d = PeekVector(vec, 4);
+  assert(*result_d == d);
   void* outOfBounds = PeekVector(vec, 5);
   assert(outOfBounds == NULL);
 
