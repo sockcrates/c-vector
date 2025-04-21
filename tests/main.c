@@ -7,6 +7,7 @@ int main(void) {
   EmptyVector();
   PushingToBack();
   PushingToFront();
+  InsertingVector();
   printf("✅ All tests passed!\n");
   return 0;
 }
