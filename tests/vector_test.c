@@ -55,3 +55,29 @@ void PushingToFront() {
 
   DestroyVector(vec);
 }
+
+void InsertingVector() {
+  printf("Running InsertingVector()…\n");
+  Vector* vec = CreateVector();
+  int a = 1;
+  int b = 2;
+  int c = 3;
+  int d = 4;
+  PushBackVector(vec, &a);
+  PushBackVector(vec, &b);
+  PushBackVector(vec, &c);
+  PushBackVector(vec, &d);
+  int e = 5;
+  InsertVector(vec, 2, &e);
+
+  int* resultA = PeekVector(vec, 0);
+  assert(*resultA == a);
+  int* resultB = PeekVector(vec, 1);
+  assert(*resultB == b);
+  int* resultE = PeekVector(vec, 2);
+  assert(*resultE == e);
+  int* resultC = PeekVector(vec, 3);
+  assert(*resultC == c);
+  int* resultD = PeekVector(vec, 4);
+  assert(*resultD == d);
+}

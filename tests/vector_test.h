@@ -4,6 +4,8 @@
 
 void EmptyVector();
 
+void InsertingVector();
+
 void PushingToBack();
 
 void PushingToFront();
