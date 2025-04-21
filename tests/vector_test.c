@@ -9,8 +9,8 @@ void EmptyVector() {
 
   assert(vec != NULL);
   void* data = PeekVector(vec, 0);
-
   assert(data == NULL);
+
   DestroyVector(vec);
 }
 
@@ -80,4 +80,6 @@ void InsertingVector() {
   assert(*resultC == c);
   int* resultD = PeekVector(vec, 4);
   assert(*resultD == d);
+
+  DestroyVector(vec);
 }
