@@ -4,13 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct Vector {
-  size_t element_size;
-  size_t size;
-  size_t capacity;
-  void* data;
-};
-
 Vector* CreateVector(size_t element_size) {
   Vector* vec = malloc(sizeof(Vector));
   if (vec == NULL) {
