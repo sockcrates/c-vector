@@ -5,7 +5,7 @@
 
 void EmptyVector() {
   printf("Running EmptyVector()…\n");
-  Vector* vec = CreateVector();
+  Vector* vec = CreateVector(sizeof(int));
 
   assert(vec != NULL);
   void* data = PeekVector(vec, 0);
@@ -16,7 +16,7 @@ void EmptyVector() {
 
 void PushingToBack() {
   printf("Running PushingToBack()…\n");
-  Vector* vec = CreateVector();
+  Vector* vec = CreateVector(sizeof(int));
   int a = 42;
   PushBackVector(vec, &a);
   int b = 21;
@@ -36,7 +36,7 @@ void PushingToBack() {
 
 void PushingToFront() {
   printf("Running PushingToFront()…\n");
-  Vector* vec = CreateVector();
+  Vector* vec = CreateVector(sizeof(int));
   int a = 100;
   PushFrontVector(vec, &a);
 
@@ -58,7 +58,7 @@ void PushingToFront() {
 
 void InsertingVector() {
   printf("Running InsertingVector()…\n");
-  Vector* vec = CreateVector();
+  Vector* vec = CreateVector(sizeof(int));
   int a = 1;
   int b = 2;
   int c = 3;

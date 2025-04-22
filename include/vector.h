@@ -5,7 +5,7 @@
 
 typedef struct Vector Vector;
 
-Vector* CreateVector();
+Vector* CreateVector(size_t element_size);
 
 void DestroyVector(Vector* vector);
 
