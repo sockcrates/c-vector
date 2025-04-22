@@ -3,7 +3,12 @@
 
 #include <stdlib.h>
 
-typedef struct Vector Vector;
+typedef struct Vector {
+  size_t element_size;
+  size_t size;
+  size_t capacity;
+  void* data;
+} Vector;
 
 Vector* CreateVector(size_t element_size);
 
