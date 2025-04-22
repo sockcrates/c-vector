@@ -23,13 +23,6 @@ void DestroyVector(Vector* vector) {
   }
 }
 
-void* PeekVector(Vector* vector, size_t index) {
-  if (index < 0 || index >= vector->size) {
-    return NULL;
-  }
-  return vector->data + (index * vector->element_size);
-}
-
 bool ExpandVector(Vector* vector) {
   size_t new_capacity = vector->capacity ? vector->capacity * 2 : 1;
   void* new_data = realloc(vector->data, new_capacity * vector->element_size);
