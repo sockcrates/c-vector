@@ -45,15 +45,15 @@ void PushBackVector(Vector* vector, void* data) {
   vector->size++;
 }
 
-void InsertVector(Vector* vector, size_t pos, void* data) {
+void InsertVector(Vector* vector, size_t index, void* data) {
   if (vector->size == vector->capacity) {
     if (!ExpandVector(vector)) {
       return;
     }
   }
-  void* dest = vector->data + (pos * vector->element_size);
+  void* dest = vector->data + (index * vector->element_size);
   void* move_dest = dest + vector->element_size;
-  size_t move_size = (vector->size - pos) * vector->element_size;
+  size_t move_size = (vector->size - index) * vector->element_size;
   memmove(move_dest, dest, move_size);
   memcpy(dest, data, vector->element_size);
   vector->size++;
