@@ -62,3 +62,10 @@ void InsertVector(Vector* vector, size_t index, void* data) {
 void PushFrontVector(Vector* vector, void* data) {
   InsertVector(vector, 0, data);
 }
+
+void RemoveAtIndexVector(Vector* vector, size_t index) {
+  void* dest = vector->data + (index * vector->element_size);
+  size_t move_size = (vector->size - index - 1) * vector->element_size;
+  memmove(dest, dest + vector->element_size, move_size);
+  vector->size--;
+}

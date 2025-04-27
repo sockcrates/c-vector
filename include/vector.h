@@ -20,4 +20,6 @@ void PushBackVector(Vector* vector, void* data);
 
 void PushFrontVector(Vector* vector, void* data);
 
+void RemoveAtIndexVector(Vector* vector, size_t index);
+
 #endif
