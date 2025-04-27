@@ -8,6 +8,7 @@ int main(void) {
   PushingToBack();
   PushingToFront();
   InsertingVector();
+  RemovingAtIndex();
   printf("✅ All tests passed!\n");
   return 0;
 }

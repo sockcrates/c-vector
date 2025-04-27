@@ -10,4 +10,6 @@ void PushingToBack();
 
 void PushingToFront();
 
+void RemovingAtIndex();
+
 #endif

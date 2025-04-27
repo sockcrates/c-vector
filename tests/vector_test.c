@@ -73,3 +73,24 @@ void InsertingVector() {
 
   DestroyVector(vec);
 }
+
+void RemovingAtIndex() {
+  printf("Running RemovingAtIndex()…\n");
+  Vector* vec = CreateVector(sizeof(int));
+  int a = 1;
+  int b = 2;
+  int c = 3;
+  int d = 4;
+  PushBackVector(vec, &a);
+  PushBackVector(vec, &b);
+  PushBackVector(vec, &c);
+  PushBackVector(vec, &d);
+
+  RemoveAtIndexVector(vec, 1);
+  int* data = (int*)vec->data;
+  assert(data[0] == a);
+  assert(data[1] == c);
+  assert(data[2] == d);
+
+  DestroyVector(vec);
+}
