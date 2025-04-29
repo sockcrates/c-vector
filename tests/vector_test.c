@@ -118,3 +118,27 @@ void PoppingBack() {
 
   DestroyVector(vec);
 }
+
+void PoppingFront() {
+  printf("Running PoppingFront()…\n");
+  Vector* vec = CreateVector(sizeof(int));
+  int a = 1;
+  int b = 2;
+  int c = 3;
+  int d = 4;
+  PushBackVector(vec, &a);
+  PushBackVector(vec, &b);
+  PushBackVector(vec, &c);
+  PushBackVector(vec, &d);
+
+  int* value_a = PopFrontVector(vec);
+  assert(*value_a == a);
+  int* value_b = PopFrontVector(vec);
+  assert(*value_b == b);
+  int* value_c = PopFrontVector(vec);
+  assert(*value_c == c);
+  int* value_d = PopFrontVector(vec);
+  assert(*value_d == d);
+
+  DestroyVector(vec);
+}

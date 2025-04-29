@@ -24,4 +24,6 @@ void RemoveAtIndexVector(Vector* vector, size_t index);
 
 void* PopBackVector(Vector* vector);
 
+void* PopFrontVector(Vector* vector);
+
 #endif
