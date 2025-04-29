@@ -96,7 +96,7 @@ void RemovingAtIndex() {
 }
 
 void PoppingBack() {
-  printf("Running RemovingAtIndex()…\n");
+  printf("Running PoppingBack()…\n");
   Vector* vec = CreateVector(sizeof(int));
   int a = 1;
   int b = 2;
