@@ -78,3 +78,10 @@ void* PopBackVector(Vector* vector) {
   vector->size--;
   return result;
 }
+
+void* PopFrontVector(Vector* vector) {
+  void* result = malloc(vector->element_size);
+  memcpy(result, vector->data, vector->element_size);
+  RemoveAtIndexVector(vector, 0);
+  return result;
+}

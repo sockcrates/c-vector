@@ -10,6 +10,7 @@ int main(void) {
   InsertingVector();
   RemovingAtIndex();
   PoppingBack();
+  PoppingFront();
   printf("✅ All tests passed!\n");
   return 0;
 }

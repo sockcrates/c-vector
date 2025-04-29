@@ -14,4 +14,6 @@ void RemovingAtIndex();
 
 void PoppingBack();
 
+void PoppingFront();
+
 #endif
