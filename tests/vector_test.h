@@ -12,4 +12,6 @@ void PushingToFront();
 
 void RemovingAtIndex();
 
+void PoppingBack();
+
 #endif
