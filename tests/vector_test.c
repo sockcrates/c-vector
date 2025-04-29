@@ -94,3 +94,27 @@ void RemovingAtIndex() {
 
   DestroyVector(vec);
 }
+
+void PoppingBack() {
+  printf("Running RemovingAtIndex()…\n");
+  Vector* vec = CreateVector(sizeof(int));
+  int a = 1;
+  int b = 2;
+  int c = 3;
+  int d = 4;
+  PushBackVector(vec, &a);
+  PushBackVector(vec, &b);
+  PushBackVector(vec, &c);
+  PushBackVector(vec, &d);
+
+  int* value_d = PopBackVector(vec);
+  assert(*value_d == d);
+  int* value_c = PopBackVector(vec);
+  assert(*value_c == c);
+  int* value_b = PopBackVector(vec);
+  assert(*value_b == b);
+  int* value_a = PopBackVector(vec);
+  assert(*value_a == a);
+
+  DestroyVector(vec);
+}

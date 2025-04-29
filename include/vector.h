@@ -22,4 +22,6 @@ void PushFrontVector(Vector* vector, void* data);
 
 void RemoveAtIndexVector(Vector* vector, size_t index);
 
+void* PopBackVector(Vector* vector);
+
 #endif

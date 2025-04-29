@@ -69,3 +69,12 @@ void RemoveAtIndexVector(Vector* vector, size_t index) {
   memmove(dest, dest + vector->element_size, move_size);
   vector->size--;
 }
+
+void* PopBackVector(Vector* vector) {
+  size_t last_element = vector->size - 1;
+  void* result = malloc(vector->element_size);
+  memcpy(result, vector->data + (vector->element_size * last_element),
+         vector->element_size);
+  vector->size--;
+  return result;
+}
