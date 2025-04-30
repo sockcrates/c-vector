@@ -5,6 +5,9 @@
 #include <string.h>
 
 Vector* CreateVector(size_t element_size) {
+  if (element_size <= 0) {
+    return NULL;
+  }
   Vector* vec = malloc(sizeof(Vector));
   if (vec == NULL) {
     return NULL;
@@ -13,6 +16,9 @@ Vector* CreateVector(size_t element_size) {
   vec->size = 0;
   vec->capacity = 10;
   vec->data = malloc(vec->capacity * vec->element_size);
+  if (vec->data == NULL) {
+    return NULL;
+  }
   return vec;
 }
 
@@ -46,6 +52,9 @@ void PushBackVector(Vector* vector, void* data) {
 }
 
 void InsertVector(Vector* vector, size_t index, void* data) {
+  if (index < 0 || index > vector->size) {
+    return;
+  }
   if (vector->size == vector->capacity) {
     if (!ExpandVector(vector)) {
       return;
@@ -64,6 +73,9 @@ void PushFrontVector(Vector* vector, void* data) {
 }
 
 void RemoveAtIndexVector(Vector* vector, size_t index) {
+  if (index < 0 || index > vector->size - 1) {
+    return;
+  }
   void* dest = vector->data + (index * vector->element_size);
   size_t move_size = (vector->size - index - 1) * vector->element_size;
   memmove(dest, dest + vector->element_size, move_size);
@@ -71,6 +83,9 @@ void RemoveAtIndexVector(Vector* vector, size_t index) {
 }
 
 void* PopBackVector(Vector* vector) {
+  if (vector->size == 0) {
+    return NULL;
+  }
   size_t last_element = vector->size - 1;
   void* result = malloc(vector->element_size);
   memcpy(result, vector->data + (vector->element_size * last_element),
@@ -80,6 +95,9 @@ void* PopBackVector(Vector* vector) {
 }
 
 void* PopFrontVector(Vector* vector) {
+  if (vector->size == 0) {
+    return NULL;
+  }
   void* result = malloc(vector->element_size);
   memcpy(result, vector->data, vector->element_size);
   RemoveAtIndexVector(vector, 0);
