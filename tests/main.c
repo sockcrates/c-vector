@@ -11,6 +11,7 @@ int main(void) {
   RemovingAtIndex();
   PoppingBack();
   PoppingFront();
+  MergingVectors();
   printf("✅ All tests passed!\n");
   return 0;
 }
