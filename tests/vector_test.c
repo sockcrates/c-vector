@@ -149,15 +149,18 @@ void MergingVectors() {
   PushBackVector(foo, &(char){ 'F' });
   PushBackVector(foo, &(char){ 'o' });
   PushBackVector(foo, &(char){ 'o' });
-  Vector* bar = CreateVector(sizeof(char));
-  PushBackVector(bar, &(char){ 'B' });
-  PushBackVector(bar, &(char){ 'a' });
-  PushBackVector(bar, &(char){ 'r' });
+  Vector* bar_baz = CreateVector(sizeof(char));
+  PushBackVector(bar_baz, &(char){ 'B' });
+  PushBackVector(bar_baz, &(char){ 'a' });
+  PushBackVector(bar_baz, &(char){ 'r' });
+  PushBackVector(bar_baz, &(char){ 'B' });
+  PushBackVector(bar_baz, &(char){ 'a' });
+  PushBackVector(bar_baz, &(char){ 'z' });
 
-  char* expected = "FooBar";
-  MergeVector(foo, bar);
-  char* foo_bar = (char*)foo->data;
+  char* expected = "FooBarBaz";
+  MergeVector(foo, bar_baz);
+  char* foo_bar_baz = (char*)foo->data;
   for (size_t i = 0; i < foo->size; ++i) {
-    assert(expected[i] == foo_bar[i]);
+    assert(expected[i] == foo_bar_baz[i]);
   }
 }
