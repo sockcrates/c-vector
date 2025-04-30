@@ -16,4 +16,6 @@ void PoppingBack();
 
 void PoppingFront();
 
+void MergingVectors();
+
 #endif

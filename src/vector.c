@@ -85,3 +85,19 @@ void* PopFrontVector(Vector* vector) {
   RemoveAtIndexVector(vector, 0);
   return result;
 }
+
+void MergeVector(Vector* destination, Vector* source) {
+  if (destination->element_size != source->element_size) {
+    return;
+  }
+  size_t free_space = destination->capacity - destination->size;
+  if (free_space < source->size) {
+    size_t new_capacity = destination->capacity + source->size;
+    void* new_data = realloc(destination->data, new_capacity);
+    destination->data = new_data;
+  }
+  void* dest =
+      destination->data + (destination->size * destination->element_size);
+  memmove(dest, source->data, source->size);
+  destination->size += source->size;
+}

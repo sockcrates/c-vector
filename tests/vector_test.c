@@ -142,3 +142,22 @@ void PoppingFront() {
 
   DestroyVector(vec);
 }
+
+void MergingVectors() {
+  printf("Running MergingVectors()…\n");
+  Vector* foo = CreateVector(sizeof(char));
+  PushBackVector(foo, &(char){ 'F' });
+  PushBackVector(foo, &(char){ 'o' });
+  PushBackVector(foo, &(char){ 'o' });
+  Vector* bar = CreateVector(sizeof(char));
+  PushBackVector(bar, &(char){ 'B' });
+  PushBackVector(bar, &(char){ 'a' });
+  PushBackVector(bar, &(char){ 'r' });
+
+  char* expected = "FooBar";
+  MergeVector(foo, bar);
+  char* foo_bar = (char*)foo->data;
+  for (size_t i = 0; i < foo->size; ++i) {
+    assert(expected[i] == foo_bar[i]);
+  }
+}
