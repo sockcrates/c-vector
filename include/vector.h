@@ -26,6 +26,6 @@ void* PopBackVector(Vector* vector);
 
 void* PopFrontVector(Vector* vector);
 
-void MergeVector(Vector* vector_a, Vector* vector_b);
+void MergeVector(Vector* destination, Vector* source);
 
 #endif
