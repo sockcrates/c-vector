@@ -146,9 +146,9 @@ void PoppingFront() {
 void MergingVectors() {
   printf("Running MergingVectors()…\n");
   Vector* foo = CreateVector(sizeof(char));
-  PushBackVector(foo, &(char){ 'F' });
-  PushBackVector(foo, &(char){ 'o' });
-  PushBackVector(foo, &(char){ 'o' });
+  PushBackVector(foo, "F");
+  PushBackVector(foo, "o");
+  PushBackVector(foo, "o");
   Vector* bar_baz = CreateVector(sizeof(char));
   PushBackVector(bar_baz, &(char){ 'B' });
   PushBackVector(bar_baz, &(char){ 'a' });
