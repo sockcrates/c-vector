@@ -26,7 +26,7 @@ void DestroyVector(Vector* vector) {
 bool ExpandVector(Vector* vector) {
   size_t new_capacity = vector->capacity ? vector->capacity * 2 : 1;
   void* new_data = realloc(vector->data, new_capacity * vector->element_size);
-  if (!new_data) {
+  if (new_data == NULL) {
     return false;
   }
   vector->data = new_data;
