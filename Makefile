@@ -10,6 +10,7 @@ TEST_SRC  := tests/vector_test.c tests/main.c
 LIB_OBJ   := $(LIB_SRC:%.c=$(BUILD_DIR)/%.o)
 TEST_OBJ  := $(TEST_SRC:%.c=$(BUILD_DIR)/%.o)
 ALL_OBJ   := $(LIB_OBJ) $(TEST_OBJ)
+LIB_STATIC := $(BUILD_DIR)/libvector.a
 
 TEST_BIN  := $(BUILD_DIR)/test_vector
 
@@ -20,9 +21,14 @@ SDKROOT := $(shell xcrun --show-sdk-path)
 export SDKROOT
 endif
 
-.PHONY: all test clean
+.PHONY: all test clean build_lib
 
-all: test
+all: test $(LIB_STATIC)
+
+build_lib: $(LIB_STATIC)
+
+$(LIB_STATIC): $(LIB_OBJ)
+	$(AR) rcs $@ $^
 
 # Link everything into the test binary (in build/)
 $(TEST_BIN): $(ALL_OBJ)
@@ -37,7 +43,8 @@ $(BUILD_DIR)/%.o: %.c
 
 test: $(TEST_BIN)
 	@echo "⏳ Running tests…"
-	@./$(TEST_BIN)
+	@./$(TEST_BIN) || \
+	{ echo "❌ Tests failed!"; exit 1; }
 
 clean:
 	rm -rf $(BUILD_DIR)
