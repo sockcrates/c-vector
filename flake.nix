@@ -47,16 +47,23 @@
       devShells = forAllSystems (system:
         let
           pkgs = import nixpkgs { inherit system; };
+          clang = pkgs.llvmPackages_18.clang;
+          clangTools = pkgs.llvmPackages_18.clang-tools;
+          clangdWrapped = pkgs.writeShellScriptBin "clangd" ''
+            exec ${clangTools}/bin/clangd --query-driver=${clang}/bin/clang "$@"
+          '';
         in
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
-              llvmPackages_18.clang
+              clangdWrapped
+              clang
+              clangTools
               gnumake
             ];
 
             shellHook = ''
-              export CC=clang
+              export CC=${clang}/bin/clang
             '';
           };
         });

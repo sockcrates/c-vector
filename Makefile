@@ -1,5 +1,5 @@
 CC        := clang
-CFLAGS    := -std=c11 -Wall -Wextra -g -Iinclude -Itests
+CFLAGS    := -std=c23 -Wall -Wextra -g -Iinclude -Itests
 
 BUILD_DIR := build
 
