@@ -1,0 +1,53 @@
+[
+  {
+    "directory": "/home/mark/Projects/github.com/sockcrates/c-vector",
+    "file": "src/vector.c",
+    "arguments": [
+      "clang",
+      "-std=c23",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-Iinclude",
+      "-Itests",
+      "-c",
+      "src/vector.c",
+      "-o",
+      "build/src/vector.o"
+    ]
+  },
+  {
+    "directory": "/home/mark/Projects/github.com/sockcrates/c-vector",
+    "file": "tests/vector_test.c",
+    "arguments": [
+      "clang",
+      "-std=c23",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-Iinclude",
+      "-Itests",
+      "-c",
+      "tests/vector_test.c",
+      "-o",
+      "build/tests/vector_test.o"
+    ]
+  },
+  {
+    "directory": "/home/mark/Projects/github.com/sockcrates/c-vector",
+    "file": "tests/main.c",
+    "arguments": [
+      "clang",
+      "-std=c23",
+      "-Wall",
+      "-Wextra",
+      "-g",
+      "-Iinclude",
+      "-Itests",
+      "-c",
+      "tests/main.c",
+      "-o",
+      "build/tests/main.o"
+    ]
+  }
+]
