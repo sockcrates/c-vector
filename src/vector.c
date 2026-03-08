@@ -114,8 +114,8 @@ void MergeVector(Vector* destination, Vector* source) {
     void* new_data = realloc(destination->data, new_capacity);
     destination->data = new_data;
   }
-  void* dest =
-      destination->data + (destination->size * destination->element_size);
+  char* dest =
+      (char*)destination->data + (destination->size * destination->element_size);
   memmove(dest, source->data, source->size);
   destination->size += source->size;
 }
