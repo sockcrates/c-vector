@@ -1,4 +1,5 @@
 CompileFlags:
   Add:
-    - -I../include
-    - -I../tests
+    - -std=c23
+    - -Wall
+    - -Wextra
