@@ -2,257 +2,135 @@
 
 #include <assert.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-void EmptyVector() {
-  printf("Running EmptyVector()…\n");
-  Vector* vec = CreateVector(sizeof(int));
+typedef struct Pair { int first; int second; } Pair;
 
-  assert(vec != NULL);
+typedef struct FailingAllocator {
+  size_t calls;
+  size_t fail_on;
+  size_t frees;
+} FailingAllocator;
+static FailingAllocator allocator_state;
+static void *TestMalloc(size_t bytes) {
+  ++allocator_state.calls;
+  return allocator_state.calls == allocator_state.fail_on ? NULL : malloc(bytes);
+}
+static void *TestRealloc(void *pointer, size_t bytes) {
+  ++allocator_state.calls;
+  return allocator_state.calls == allocator_state.fail_on ? NULL : realloc(pointer, bytes);
+}
+static void TestFree(void *pointer) { ++allocator_state.frees; free(pointer); }
+static const VectorAllocator failing_allocator = {TestMalloc, TestRealloc, TestFree};
 
-  DestroyVector(vec);
+static void CheckInts(const Vector *vector, const int *expected, size_t count) {
+  assert(GetVectorSize(vector) == count);
+  for (size_t i = 0; i < count; ++i) assert(*(const int *)GetConstVectorElement(vector, i) == expected[i]);
 }
 
-void InvalidSizedElementVector() {
-  printf("Running InvalidZeroSizedElementVector()…\n");
-  Vector* zero_vec = CreateVector(0);
-
-  assert(zero_vec == NULL);
-
-  DestroyVector(zero_vec);
-
-  Vector* negative_vec = CreateVector(0);
-
-  assert(negative_vec == NULL);
-
-  DestroyVector(negative_vec);
+void EmptyVector(void) {
+  Vector *vector = CreateVector(sizeof(int));
+  assert(vector != NULL && GetVectorSize(vector) == 0 && GetVectorCapacity(vector) == 10);
+  assert(GetFrontVector(vector) == NULL && GetBackVector(vector) == NULL);
+  DestroyVector(vector);
 }
-
-void PushingToBack() {
-  printf("Running PushingToBack()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-  int a = 42;
-  PushBackVector(vec, &a);
-  int b = 21;
-  PushBackVector(vec, &b);
-  int c = 11;
-  PushBackVector(vec, &c);
-
-  int* data = (int*)vec->data;
-  assert(data[0] == a);
-  assert(data[1] == b);
-  assert(data[2] == c);
-
-  DestroyVector(vec);
+void InvalidSizedElementVector(void) {
+  VectorAllocator incomplete = {malloc, NULL, free};
+  assert(CreateVector(0) == NULL);
+  assert(CreateVectorWithAllocator(sizeof(int), NULL) == NULL);
+  assert(CreateVectorWithAllocator(sizeof(int), &incomplete) == NULL);
+  assert(ReserveVector(NULL, 4) == VECTOR_NULL_INPUT);
 }
-
-void PushingToFront() {
-  printf("Running PushingToFront()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-  int a = 100;
-  PushFrontVector(vec, &a);
-
-  int* data = (int*)vec->data;
-  assert(data[0] == a);
-
-  int b = 25;
-  PushFrontVector(vec, &b);
-  assert(data[0] == b);
-
-  int c = 16;
-  PushFrontVector(vec, &c);
-  assert(data[0] == c);
-
-  DestroyVector(vec);
+void PushingToBack(void) {
+  Vector *vector = CreateVector(sizeof(int));
+  for (int i = 0; i < 15; ++i) assert(PushBackVector(vector, &i) == VECTOR_SUCCESS);
+  for (size_t i = 0; i < 15; ++i) assert(*(int *)GetVectorElement(vector, i) == (int)i);
+  assert(GetVectorCapacity(vector) >= 15);
+  DestroyVector(vector);
 }
-
-void InsertingVector() {
-  printf("Running InsertingVector()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-  int a = 11;
-  int b = 256;
-  int c = 3018;
-  int d = 2;
-  PushBackVector(vec, &a);
-  PushBackVector(vec, &b);
-  PushBackVector(vec, &c);
-  PushBackVector(vec, &d);
-
-  int e = 5;
-  InsertVector(vec, 2, &e);
-  int f = 8;
-  InsertVector(vec, 5, &f);
-
-  int* data = (int*)vec->data;
-  assert(data[0] == a);
-  assert(data[1] == b);
-  assert(data[2] == e);
-  assert(data[3] == c);
-  assert(data[4] == d);
-  assert(data[5] == f);
-
-  DestroyVector(vec);
+void PushingToFront(void) {
+  Vector *vector = CreateVector(sizeof(int));
+  int a = 1, b = 2;
+  assert(PushFrontVector(vector, &a) == VECTOR_SUCCESS);
+  assert(PushFrontVector(vector, &b) == VECTOR_SUCCESS);
+  { const int expected[] = {2, 1}; CheckInts(vector, expected, 2); }
+  DestroyVector(vector);
 }
-
-void InsertingVectorInvalidIndex() {
-  printf("Running InsertingVectorInvalidIndex()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-  int a = 988517;
-  int b = 6;
-  int c = 38;
-  int d = 87;
-  PushBackVector(vec, &a);
-  PushBackVector(vec, &b);
-  PushBackVector(vec, &c);
-  PushBackVector(vec, &d);
-
-  InsertVector(vec, -1, &(int){ 2 });
-
-  int* data = (int*)vec->data;
-  assert(data[0] == a);
-  assert(data[1] == b);
-  assert(data[2] == c);
-  assert(data[3] == d);
-
-  InsertVector(vec, 5, &(int){ 29929 });
-  assert(vec->size == 4);
-
-  DestroyVector(vec);
+void InsertingVector(void) {
+  Vector *vector = CreateVector(sizeof(int));
+  int values[] = {1, 2, 4};
+  int three = 3;
+  for (size_t i = 0; i < 3; ++i) assert(PushBackVector(vector, &values[i]) == VECTOR_SUCCESS);
+  assert(InsertVector(vector, 2, &three) == VECTOR_SUCCESS);
+  { const int expected[] = {1, 2, 3, 4}; CheckInts(vector, expected, 4); }
+  assert(InsertVector(vector, 5, &three) == VECTOR_INVALID_INDEX);
+  assert(InsertVector(NULL, 0, &three) == VECTOR_NULL_INPUT);
+  DestroyVector(vector);
 }
-
-void RemovingAtIndex() {
-  printf("Running RemovingAtIndex()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-  int a = 1;
-  int b = 2;
-  int c = 3;
-  int d = 4;
-  PushBackVector(vec, &a);
-  PushBackVector(vec, &b);
-  PushBackVector(vec, &c);
-  PushBackVector(vec, &d);
-
-  RemoveAtIndexVector(vec, 1);
-  int* data = (int*)vec->data;
-  assert(data[0] == a);
-  assert(data[1] == c);
-  assert(data[2] == d);
-
-  DestroyVector(vec);
+void RemovingAtIndex(void) {
+  Vector *vector = CreateVector(sizeof(int));
+  int values[] = {1, 2, 3};
+  for (size_t i = 0; i < 3; ++i) PushBackVector(vector, &values[i]);
+  assert(RemoveAtIndexVector(vector, 1) == VECTOR_SUCCESS);
+  { const int expected[] = {1, 3}; CheckInts(vector, expected, 2); }
+  assert(RemoveAtIndexVector(vector, 2) == VECTOR_INVALID_INDEX);
+  DestroyVector(vector);
 }
-
-void RemovingAtInvalidIndex() {
-  printf("Running RemovingAtInvalidIndex()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-  int a = 1;
-  int b = 2;
-  int c = 3;
-  int d = 4;
-  PushBackVector(vec, &a);
-  PushBackVector(vec, &b);
-  PushBackVector(vec, &c);
-  PushBackVector(vec, &d);
-
-  RemoveAtIndexVector(vec, -1);
-  RemoveAtIndexVector(vec, 4);
-  int* data = (int*)vec->data;
-  assert(data[0] == a);
-  assert(data[1] == b);
-  assert(data[2] == c);
-  assert(data[3] == d);
-
-  DestroyVector(vec);
+void Popping(void) {
+  Vector *vector = CreateVector(sizeof(int));
+  int a = 1, b = 2, out = 0;
+  assert(PopBackVector(vector, &out) == VECTOR_INVALID_INDEX);
+  assert(PopBackVector(vector, NULL) == VECTOR_NULL_INPUT);
+  PushBackVector(vector, &a); PushBackVector(vector, &b);
+  assert(PopFrontVector(vector, &out) == VECTOR_SUCCESS && out == a);
+  assert(PopBackVector(vector, &out) == VECTOR_SUCCESS && out == b);
+  DestroyVector(vector);
 }
-
-void PoppingBack() {
-  printf("Running PoppingBack()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-
-  assert(PopBackVector(vec) == NULL);
-
-  int a = 1;
-  int b = 2;
-  int c = 3;
-  int d = 4;
-  PushBackVector(vec, &a);
-  PushBackVector(vec, &b);
-  PushBackVector(vec, &c);
-  PushBackVector(vec, &d);
-
-  int* value_d = PopBackVector(vec);
-  assert(*value_d == d);
-  int* value_c = PopBackVector(vec);
-  assert(*value_c == c);
-  int* value_b = PopBackVector(vec);
-  assert(*value_b == b);
-  int* value_a = PopBackVector(vec);
-  assert(*value_a == a);
-
-  DestroyVector(vec);
+void ResizeAndAccessors(void) {
+  Vector *vector = CreateVector(sizeof(Pair));
+  Pair pair = {7, 9};
+  assert(ResizeVector(vector, 3, &pair) == VECTOR_SUCCESS);
+  assert(((Pair *)GetFrontVector(vector))->second == 9);
+  assert(((const Pair *)GetConstBackVector(vector))->first == 7);
+  assert(ResizeVector(vector, 1, NULL) == VECTOR_SUCCESS);
+  assert(ResizeVector(vector, 2, NULL) == VECTOR_NULL_INPUT);
+  DestroyVector(vector);
 }
-
-void PoppingFront() {
-  printf("Running PoppingFront()…\n");
-  Vector* vec = CreateVector(sizeof(int));
-
-  assert(PopFrontVector(vec) == NULL);
-
-  int a = 1;
-  int b = 2;
-  int c = 3;
-  int d = 4;
-  PushBackVector(vec, &a);
-  PushBackVector(vec, &b);
-  PushBackVector(vec, &c);
-  PushBackVector(vec, &d);
-
-  int* value_a = PopFrontVector(vec);
-  assert(*value_a == a);
-  int* value_b = PopFrontVector(vec);
-  assert(*value_b == b);
-  int* value_c = PopFrontVector(vec);
-  assert(*value_c == c);
-  int* value_d = PopFrontVector(vec);
-  assert(*value_d == d);
-
-  DestroyVector(vec);
+void AliasedMutations(void) {
+  Vector *vector = CreateVector(sizeof(int));
+  for (int i = 0; i < 10; ++i) PushBackVector(vector, &i);
+  assert(PushBackVector(vector, GetVectorElement(vector, 3)) == VECTOR_SUCCESS);
+  assert(*(int *)GetBackVector(vector) == 3);
+  assert(InsertVector(vector, 1, GetVectorElement(vector, 8)) == VECTOR_SUCCESS);
+  assert(*(int *)GetVectorElement(vector, 1) == 8);
+  DestroyVector(vector);
 }
-
-void MergingVectors() {
-  printf("Running MergingVectors()…\n");
-  Vector* foo = CreateVector(sizeof(char));
-  PushBackVector(foo, "F");
-  PushBackVector(foo, "o");
-  PushBackVector(foo, "o");
-  Vector* bar_baz = CreateVector(sizeof(char));
-  PushBackVector(bar_baz, &(char){ 'B' });
-  PushBackVector(bar_baz, &(char){ 'a' });
-  PushBackVector(bar_baz, &(char){ 'r' });
-  PushBackVector(bar_baz, &(char){ 'B' });
-  PushBackVector(bar_baz, &(char){ 'a' });
-  PushBackVector(bar_baz, &(char){ 'z' });
-
-  char* expected = "FooBarBaz";
-  MergeVector(foo, bar_baz);
-  char* foo_bar_baz = (char*)foo->data;
-  for (size_t i = 0; i < foo->size; ++i) {
-    assert(expected[i] == foo_bar_baz[i]);
+void AppendingVectors(void) {
+  Vector *left = CreateVector(sizeof(Pair));
+  Vector *right = CreateVector(sizeof(Pair));
+  Pair one = {1, 2}, two = {3, 4};
+  PushBackVector(left, &one); PushBackVector(right, &two);
+  assert(AppendVector(left, right) == VECTOR_SUCCESS);
+  assert(((Pair *)GetBackVector(left))->first == 3);
+  assert(AppendVector(left, left) == VECTOR_SUCCESS);
+  assert(GetVectorSize(left) == 4);
+  {
+    Vector *incompatible = CreateVector(sizeof(int));
+    assert(AppendVector(left, incompatible) == VECTOR_INCOMPATIBLE_ELEMENT_SIZES);
+    DestroyVector(incompatible);
   }
-  assert(foo->size == 9);
-
-  DestroyVector(foo);
-  DestroyVector(bar_baz);
+  DestroyVector(left); DestroyVector(right);
 }
-
-void MergingIncompatibleVectors() {
-  Vector* big = CreateVector(sizeof(long));
-  PushBackVector(big, &(long){ 1 });
-  Vector* small = CreateVector(sizeof(int));
-  PushBackVector(small, &(int){ 1 });
-
-  MergeVector(big, small);
-  assert(big->size == 1);
-  assert(small->size == 1);
-
-  DestroyVector(big);
-  DestroyVector(small);
+void AllocationFailures(void) {
+  Vector *vector;
+  int value = 5;
+  allocator_state = (FailingAllocator){0, 3, 0};
+  vector = CreateVectorWithAllocator(sizeof(int), &failing_allocator);
+  assert(vector != NULL);
+  for (int i = 0; i < 10; ++i) PushBackVector(vector, &i);
+  assert(PushBackVector(vector, &value) == VECTOR_ALLOCATION_FAILURE);
+  assert(GetVectorSize(vector) == 10 && *(int *)GetBackVector(vector) == 9);
+  DestroyVector(vector);
+  assert(allocator_state.frees >= 2);
 }

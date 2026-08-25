@@ -9,13 +9,12 @@ int main(void) {
   PushingToBack();
   PushingToFront();
   InsertingVector();
-  InsertingVectorInvalidIndex();
   RemovingAtIndex();
-  RemovingAtInvalidIndex();
-  PoppingBack();
-  PoppingFront();
-  MergingVectors();
-  MergingIncompatibleVectors();
+  Popping();
+  ResizeAndAccessors();
+  AliasedMutations();
+  AppendingVectors();
+  AllocationFailures();
   printf("✅ All tests passed!\n");
   return 0;
 }
