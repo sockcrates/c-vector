@@ -1,3 +1,5 @@
+// POSIX requires this feature-test macro before any system header.
+// NOLINTNEXTLINE(cert-dcl37-c,cert-dcl51-cpp)
 #define _POSIX_C_SOURCE 200809L
 
 #include <inttypes.h>
