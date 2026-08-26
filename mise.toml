@@ -1,2 +1,6 @@
 [tools]
 clang = "latest"
+
+[tasks.lint]
+description = "Compile all targets with Clang warnings treated as errors"
+run = "make lint"
