@@ -2,6 +2,10 @@
 clang = "latest"
 clang-format = "latest"
 
+[tasks.test]
+description = "Build and run the test suite"
+run = "make test"
+
 [tasks.lint]
 description = "Compile all targets with Clang warnings treated as errors"
 run = "make lint"
