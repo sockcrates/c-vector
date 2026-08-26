@@ -1,6 +1,15 @@
 [tools]
 clang = "latest"
+clang-format = "latest"
 
 [tasks.lint]
 description = "Compile all targets with Clang warnings treated as errors"
 run = "make lint"
+
+[tasks.format]
+description = "Format C source and header files with clang-format"
+run = "make format"
+
+[tasks.format-check]
+description = "Check C source and header files are formatted with clang-format"
+run = "make format-check"

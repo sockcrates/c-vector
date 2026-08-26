@@ -13,6 +13,7 @@ LIB_OBJ := $(LIB_SRC:%.c=$(BUILD_DIR)/%.o)
 TEST_OBJ := $(TEST_SRC:%.c=$(BUILD_DIR)/%.o)
 LIB_STATIC := $(BUILD_DIR)/libvector.a
 TEST_BIN := $(BUILD_DIR)/test_vector
+FORMAT_FILES := $(shell git ls-files '*.c' '*.h')
 
 UNAME_S := $(shell uname -s)
 
@@ -21,7 +22,7 @@ SDKROOT := $(shell xcrun --show-sdk-path)
 export SDKROOT
 endif
 
-.PHONY: all build build_lib test lint clean
+.PHONY: all build build_lib test lint format format-check clean
 
 all: test $(LIB_STATIC)
 
@@ -49,6 +50,12 @@ test: $(TEST_BIN)
 # Compile all library and test sources under the warning policy without relying on stale objects.
 lint:
 	$(CC) $(CPPFLAGS) $(CSTD) $(WARNINGS) -fsyntax-only $(LIB_SRC) $(TEST_SRC)
+
+format:
+	clang-format -i $(FORMAT_FILES)
+
+format-check:
+	clang-format --dry-run --Werror $(FORMAT_FILES)
 
 clean:
 	rm -rf $(BUILD_DIR)
