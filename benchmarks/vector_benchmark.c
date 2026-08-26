@@ -22,29 +22,29 @@ static uint64_t NanosecondsNow(void) {
          (uint64_t)timestamp.tv_nsec;
 }
 
-static void Report(const char* label, uint64_t elapsed_nanoseconds,
+static void Report(const char *label, uint64_t elapsed_nanoseconds,
                    size_t operations) {
   const double elapsed_milliseconds = (double)elapsed_nanoseconds / 1000000.0;
   const double operations_per_second =
       (double)operations * 1000000000.0 / (double)elapsed_nanoseconds;
-  printf("%s: %.3f ms, %.0f operations/s\n", label, elapsed_milliseconds,
-         operations_per_second);
+  (void)printf("%s: %.3f ms, %.0f operations/s\n", label, elapsed_milliseconds,
+               operations_per_second);
 }
 
 static void RequireSuccess(VectorResult result) {
   if (result != VECTOR_SUCCESS) {
-    fprintf(stderr, "vector operation failed: %d\n", result);
+    (void)fprintf(stderr, "vector operation failed: %d\n", result);
     exit(EXIT_FAILURE);
   }
 }
 
 int main(void) {
-  Vector* vector = CreateVector(sizeof(int));
+  Vector *vector = CreateVector(sizeof(int));
   volatile uint64_t checksum = 0;
   uint64_t started;
 
   if (vector == NULL) {
-    fputs("could not create vector\n", stderr);
+    (void)fputs("could not create vector\n", stderr);
     return EXIT_FAILURE;
   }
 
@@ -56,7 +56,7 @@ int main(void) {
 
   started = NanosecondsNow();
   for (size_t index = 0; index < ACCESS_COUNT; ++index) {
-    const int* value =
+    const int *value =
         GetConstVectorElement(vector, index % GetVectorSize(vector));
     checksum += (uint64_t)*value;
   }
@@ -66,7 +66,7 @@ int main(void) {
   DestroyVector(vector);
   vector = CreateVector(sizeof(int));
   if (vector == NULL) {
-    fputs("could not create vector\n", stderr);
+    (void)fputs("could not create vector\n", stderr);
     return EXIT_FAILURE;
   }
   started = NanosecondsNow();

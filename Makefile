@@ -1,5 +1,7 @@
 CC := clang
 AR ?= ar
+CLANG_TIDY ?= clang-tidy
+CLANG_RESOURCE_DIR ?= $(shell $(CC) -print-resource-dir)
 
 CPPFLAGS := -Iinclude -Itests
 CSTD := -std=c23
@@ -25,7 +27,7 @@ SDKROOT := $(shell xcrun --show-sdk-path)
 export SDKROOT
 endif
 
-.PHONY: all build build_lib test lint format format-check bench benchmark check clean
+.PHONY: all build build_lib test lint tidy format format-check bench benchmark check clean
 
 all: test $(LIB_STATIC)
 
@@ -54,9 +56,13 @@ test: $(TEST_BIN)
 	@echo "Running test suite…"
 	@./$(TEST_BIN)
 
-# Compile all library and test sources under the warning policy without relying on stale objects.
+# Compile all sources under the warning policy without relying on stale objects.
 lint:
 	$(CC) $(CPPFLAGS) $(CSTD) $(WARNINGS) -fsyntax-only $(LIB_SRC) $(TEST_SRC) $(BENCH_SRC)
+
+# Enforce the SEI CERT C static-analysis policy in .clang-tidy.
+tidy:
+	$(CLANG_TIDY) --config-file=.clang-tidy --warnings-as-errors='*' --extra-arg=-resource-dir=$(CLANG_RESOURCE_DIR) $(LIB_SRC) $(TEST_SRC) $(BENCH_SRC) -- $(CPPFLAGS) $(CSTD) $(WARNINGS)
 
 format:
 	clang-format -i $(FORMAT_FILES)
@@ -67,7 +73,7 @@ format-check:
 bench benchmark: $(BENCH_BIN)
 	@./$(BENCH_BIN)
 
-check: format-check lint test
+check: format-check tidy lint test
 
 clean:
 	rm -rf $(BUILD_DIR)

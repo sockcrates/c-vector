@@ -1,0 +1,13 @@
+# SEI CERT C Coding Standard enforcement. clang-tidy automates only a subset
+# of the standard; the CERT rules remain the source of truth for review.
+---
+# `fprintf` with a constant format string is safe here; C23 has no portable
+# bounds-checked replacement for formatted diagnostic output.
+Checks: >
+  -*,
+  cert-*,
+  clang-analyzer-*,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling
+WarningsAsErrors: '*'
+HeaderFilterRegex: '(^|.*/)(include|src|tests|benchmarks)/.*'
+SystemHeaders: false

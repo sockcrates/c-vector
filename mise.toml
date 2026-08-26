@@ -1,6 +1,10 @@
+[plugins]
+clang-tidy = "https://github.com/mise-plugins/mise-llvm.git"
+
 [tools]
 clang = "latest"
 clang-format = "latest"
+clang-tidy = "latest"
 
 [tasks.test]
 description = "Build and run the test suite"
@@ -9,6 +13,10 @@ run = "make test"
 [tasks.lint]
 description = "Compile all targets with Clang warnings treated as errors"
 run = "make lint"
+
+[tasks.tidy]
+description = "Enforce the SEI CERT C static-analysis policy with clang-tidy"
+run = "make tidy"
 
 [tasks.format]
 description = "Format C source and header files with clang-format"
@@ -27,5 +35,5 @@ description = "Alias for bench"
 run = "make benchmark"
 
 [tasks.check]
-description = "Run the required formatting, lint, and test gate"
-depends = ["format-check", "lint", "test"]
+description = "Run the required formatting, CERT C analysis, lint, and test gate"
+depends = ["format-check", "tidy", "lint", "test"]
