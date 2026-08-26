@@ -17,3 +17,15 @@ run = "make format"
 [tasks.format-check]
 description = "Check C source and header files are formatted with clang-format"
 run = "make format-check"
+
+[tasks.bench]
+description = "Build and run repeatable vector operation benchmarks"
+run = "make bench"
+
+[tasks.benchmark]
+description = "Alias for bench"
+run = "make benchmark"
+
+[tasks.check]
+description = "Run the required formatting, lint, and test gate"
+depends = ["format-check", "lint", "test"]

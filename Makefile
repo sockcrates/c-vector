@@ -5,14 +5,17 @@ CPPFLAGS := -Iinclude -Itests
 CSTD := -std=c23
 WARNINGS := -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wshadow -Wformat=2 -Wnull-dereference -Wdouble-promotion -Werror
 CFLAGS := $(CSTD) $(WARNINGS) -g
+BENCH_CFLAGS := $(CSTD) $(WARNINGS) -O3 -DNDEBUG
 
 BUILD_DIR := build
 LIB_SRC := src/vector.c
 TEST_SRC := tests/vector_test.c tests/main.c
+BENCH_SRC := benchmarks/vector_benchmark.c
 LIB_OBJ := $(LIB_SRC:%.c=$(BUILD_DIR)/%.o)
 TEST_OBJ := $(TEST_SRC:%.c=$(BUILD_DIR)/%.o)
 LIB_STATIC := $(BUILD_DIR)/libvector.a
 TEST_BIN := $(BUILD_DIR)/test_vector
+BENCH_BIN := $(BUILD_DIR)/vector_benchmark
 FORMAT_FILES := $(shell git ls-files '*.c' '*.h')
 
 UNAME_S := $(shell uname -s)
@@ -22,7 +25,7 @@ SDKROOT := $(shell xcrun --show-sdk-path)
 export SDKROOT
 endif
 
-.PHONY: all build build_lib test lint format format-check clean
+.PHONY: all build build_lib test lint format format-check bench benchmark check clean
 
 all: test $(LIB_STATIC)
 
@@ -35,6 +38,10 @@ $(LIB_STATIC): $(LIB_OBJ)
 
 $(TEST_BIN): $(LIB_OBJ) $(TEST_OBJ)
 	$(CC) $(CFLAGS) -o $@ $^
+
+$(BENCH_BIN): $(LIB_SRC) $(BENCH_SRC)
+	@mkdir -p $(dir $@)
+	$(CC) $(CPPFLAGS) $(BENCH_CFLAGS) -o $@ $^
 
 # Generic rule: build/<path>.o from <path>.c
 #    e.g. build/src/vector.o ← src/vector.c
@@ -49,13 +56,18 @@ test: $(TEST_BIN)
 
 # Compile all library and test sources under the warning policy without relying on stale objects.
 lint:
-	$(CC) $(CPPFLAGS) $(CSTD) $(WARNINGS) -fsyntax-only $(LIB_SRC) $(TEST_SRC)
+	$(CC) $(CPPFLAGS) $(CSTD) $(WARNINGS) -fsyntax-only $(LIB_SRC) $(TEST_SRC) $(BENCH_SRC)
 
 format:
 	clang-format -i $(FORMAT_FILES)
 
 format-check:
 	clang-format --dry-run --Werror $(FORMAT_FILES)
+
+bench benchmark: $(BENCH_BIN)
+	@./$(BENCH_BIN)
+
+check: format-check lint test
 
 clean:
 	rm -rf $(BUILD_DIR)
