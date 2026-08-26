@@ -27,7 +27,7 @@ SDKROOT := $(shell xcrun --show-sdk-path)
 export SDKROOT
 endif
 
-.PHONY: all build build_lib test lint tidy format format-check bench benchmark check clean
+.PHONY: all build build_lib test lint tidy format format-check bench benchmark docs check clean
 
 all: test $(LIB_STATIC)
 
@@ -72,6 +72,9 @@ format-check:
 
 bench benchmark: $(BENCH_BIN)
 	@./$(BENCH_BIN)
+
+docs:
+	doxygen Doxyfile
 
 check: format-check tidy lint test
 

@@ -1,0 +1,12 @@
+PROJECT_NAME           = "c-vector"
+PROJECT_BRIEF          = "A generic, contiguous vector for C"
+OUTPUT_DIRECTORY       = build/docs
+INPUT                  = include/vector.h README.md
+FILE_PATTERNS          = *.h *.md
+RECURSIVE              = NO
+USE_MDFILE_AS_MAINPAGE = README.md
+EXTRACT_ALL            = NO
+WARN_IF_UNDOCUMENTED   = YES
+WARN_AS_ERROR          = YES
+GENERATE_LATEX         = NO
+QUIET                  = YES
