@@ -2,9 +2,9 @@
 clang-tidy = "https://github.com/mise-plugins/mise-llvm.git"
 
 [tools]
-clang = "latest"
-clang-format = "latest"
-clang-tidy = "latest"
+clang = "21.1.8"
+clang-format = "21.1.8"
+clang-tidy = "21.1.8"
 
 [tasks.test]
 description = "Build and run the test suite"
